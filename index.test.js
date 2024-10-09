@@ -18,26 +18,95 @@ describe('Restaurant and Menu Models', () => {
 
     test('can create a Restaurant', async () => {
         // TODO - write test
-        expect('NO TEST').toEqual('EXPECTED DATA')
+          const createdRestaurant = await Restaurant.create(seedRestaurant[0]);
+          expect(createdRestaurant).toEqual(
+            expect.objectContaining(seedRestaurant[0])
+          );
+
+        // expect('NO TEST').toEqual('EXPECTED DATA')
     });
 
     test('can create a Menu', async () => {
         // TODO - write test
-        expect('NO TEST').toEqual('EXPECTED DATA')
+        const createdMenu = await Menu.create(seedMenu[0]);
+        expect(createdMenu).toEqual(expect.objectContaining(seedMenu[0]));
     });
 
     test('can find Restaurants', async () => {
         // TODO - write test
-        expect('NO TEST').toEqual('EXPECTED DATA')
+        await Restaurant.create(seedRestaurant[0]);
+        let [found] = await Restaurant.findAll()
+        expect(found).toEqual(
+          expect.objectContaining({
+            name: "AppleBees",
+            location: "Texas",
+            cuisine: "FastFood",
+          })
+        );
     });
 
     test('can find Menus', async () => {
-        // TODO - write test
-        expect('NO TEST').toEqual('EXPECTED DATA')
+        await Menu.create(seedMenu[0]);
+        let [found] = await Menu.findAll();
+        expect(found).toEqual(
+          expect.objectContaining({
+            title: "Breakfast",
+          })
+        );
     });
 
-    test('can delete Restaurants', async () => {
-        // TODO - write test
-        expect('NO TEST').toEqual('EXPECTED DATA')
+    test("can Update Restaurants", async () => {
+      // TODO - write test
+      await Restaurant.create(seedRestaurant[0]);
+      let [found] = await Restaurant.findAll();
+      let updated = await found.update({
+        name: "Spice Grill",
+        location: "Houston",
+        cuisine: "Indian",
+      });
+      expect(updated).toEqual(
+        expect.objectContaining({
+          name: "Spice Grill",
+          location: "Houston",
+          cuisine: "Indian",
+        })
+      );
+    });
+
+    test("can Update Menus", async () => {
+      await Menu.create(seedMenu[0]);
+      let [found] = await Menu.findAll();
+      let updated = await found.update({
+    title: 'Dinner'
+  })
+      expect(updated).toEqual(
+        expect.objectContaining({
+        title: 'Dinner'
+    }));
+    });
+
+    test("Can delete a Restaurant instance", async () => {
+      // TODO - write test
+    //   await Restaurant.create(seedRestaurant[0]);
+      let [found] = await Restaurant.findAll();
+      let deleted = await found.destroy();
+      expect(deleted).toEqual(
+        expect.objectContaining({
+          name: "Spice Grill",
+          location: "Houston",
+          cuisine: "Indian",
+        })
+      );
+    });
+
+    test("Can delete a Menu instance", async () => {
+    //   await Menu.create(seedMenu[0]);
+      let [found] = await Menu.findAll();
+      let deleted = await found.destroy();
+      expect(deleted).toEqual(
+        expect.objectContaining({
+          title: "Dinner",
+        })
+      );
     });
 })
