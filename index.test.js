@@ -1,8 +1,8 @@
 const {sequelize} = require('./db')
-const {Restaurant, Menu} = require('./models/index')
+const {Restaurant, Menu, Item} = require('./models/index')
 const {
     seedRestaurant,
-    seedMenu,
+    seedMenu, seedItem
   } = require('./seedData');
 
 describe('Restaurant and Menu Models', () => {
@@ -109,4 +109,24 @@ describe('Restaurant and Menu Models', () => {
         })
       );
     });
+
+    test('Eager loading', async () => {
+        let allMenus = await Menu.bulkCreate(seedMenu)
+        let allMenuItems = await Item.bulkCreate(seedItem);
+        await allMenus[0].addItems(allMenuItems);
+        let menuss = await Menu.findAll({
+          include: { model: Item},
+        });
+
+        expect(menuss[2].Items.length).toBe(3
+        );
+        
+        // let menus = Menu.ge
+    })
+
+//     await User.findAll({
+//   include: { model: Tool, as: 'Instruments' },
+// });
+
+
 })
